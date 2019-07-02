@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class StartDeal {
     @Autowired
     private StdfPlatformDataDeal stdfPlatformDataDeal;
-    @Scheduled(fixedDelay = 2000)
+    @Scheduled(fixedDelay = 30000)
     public void stdfDealStart(){
         stdfPlatformDataDeal.deal(null);
     }

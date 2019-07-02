@@ -55,9 +55,6 @@ public class StdfTesterMappingParse {
 		HashMap<String, String> inforsResultMap=getWaferIdInfors(mapping.get(0));
 		String waferId=inforsResultMap.get("waferId");
 		String Test_Start_Time=inforsResultMap.get("testStartTime");
-		String customerCode=inforsResultMap.get("customerCode");
-		String device=inforsResultMap.get("device");
-		String lot=inforsResultMap.get("lot");
 		String cp=inforsResultMap.get("cp");
 		String op=inforsResultMap.get("op");
 		int reTestDies=0;

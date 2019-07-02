@@ -38,13 +38,15 @@ public class DataSourceBeforeDeal {
                                         for (File waferId : cpStep.listFiles()) {
                                             if (directoryCheckAndDeal(waferId)) {
                                                 String waferIdChar = waferId.getName();
-                                                WaferInitInformationBean waferInitInformationBean = new WaferInitInformationBean();
-                                                waferInitInformationBean.setCustomCode(customerChar);
-                                                waferInitInformationBean.setDevice(deviceChar);
-                                                waferInitInformationBean.setLot(lotChar);
-                                                waferInitInformationBean.setCp(cpStepChar);
-                                                waferInitInformationBean.setWaferId(waferIdChar);
-                                                resources.put(waferInitInformationBean, waferId.listFiles());
+                                                if (fileTimeCheck(waferId)){
+                                                    WaferInitInformationBean waferInitInformationBean = new WaferInitInformationBean();
+                                                    waferInitInformationBean.setCustomCode(customerChar);
+                                                    waferInitInformationBean.setDevice(deviceChar);
+                                                    waferInitInformationBean.setLot(lotChar);
+                                                    waferInitInformationBean.setCp(cpStepChar);
+                                                    waferInitInformationBean.setWaferId(waferIdChar);
+                                                    resources.put(waferInitInformationBean, waferId.listFiles());
+                                                }
                                             }
                                         }
                                     }
@@ -77,6 +79,17 @@ public class DataSourceBeforeDeal {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+        }
+        return true;
+    }
+    private boolean fileTimeCheck(File file){
+        long now=System.currentTimeMillis();
+        File[] datas=file.listFiles();
+        for (File data : datas) {
+            long fileLastModifyTime=data.lastModified();
+            if (((now-fileLastModifyTime)/1000)<60){
+                return false;
             }
         }
         return true;
