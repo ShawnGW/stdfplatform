@@ -24,7 +24,8 @@ public class StdfPlatformDataDeal {
     private GenerateRawdataTemp generateRawdataTemp;
     @Autowired
     private VtptmtInforImpl vtptmtInfor;
-    public void deal(HashMap<WaferInitInformationBean,File[]> resources){
+
+    public ArrayList<File[]> deal(HashMap<WaferInitInformationBean, File[]> resources) {
         ArrayList<File[]> dataNeedDelete=new ArrayList<>();
         for (Map.Entry<WaferInitInformationBean,File[]> entry: resources.entrySet()) {
             try {
@@ -36,6 +37,7 @@ public class StdfPlatformDataDeal {
                 e.printStackTrace();
             }
         }
+        return dataNeedDelete;
     }
     public void generateRawdata(WaferInitInformationBean waferInitInformationBean,ArrayList<File> waferIdOrderList,ArrayList<DataParseIssueBean> dataParseIssueBeans) throws Exception{
         RawdataInitBean rawdataInitBean=generateRawdataInitInformation.generateRawdata(waferInitInformationBean,waferIdOrderList);

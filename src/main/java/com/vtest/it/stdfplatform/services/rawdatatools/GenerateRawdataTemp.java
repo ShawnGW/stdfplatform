@@ -18,7 +18,8 @@ public class GenerateRawdataTemp {
     private GenerateRawdata generateRawdata;
     @Autowired
     private RawDataCheck rawDataCheck;
-
+    @Autowired
+    private GeneratePrimaryAndReTestMap generatePrimaryAndReTestMap;
     public boolean generateTempRawdata(RawdataInitBean rawdataInitBean, ArrayList<DataParseIssueBean> dataParseIssueBeans) throws Exception {
         File tempRawdata = generateRawdata.generate(rawdataInitBean);
         boolean checkFlag = rawDataCheck.check(tempRawdata, dataParseIssueBeans);
@@ -26,6 +27,7 @@ public class GenerateRawdataTemp {
             return false;
         }
         generateRawdataFinal.generateFinalRawdata(tempRawdata, rawdataInitBean);
+        generatePrimaryAndReTestMap.generate(rawdataInitBean);
         return true;
     }
 }

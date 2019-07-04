@@ -87,6 +87,18 @@ public class VtptmtInforImpl implements VtptmtInfor {
         return vtptmtDao.updateProperties(mesProperties);
     }
 
+    @Override
+    @Cacheable(value = "SystemPropertiesCache", key = "#root.methodName")
+    public ArrayList<DataInforToMesBean> getPrimaryTestYieldReportList() {
+        return vtptmtDao.getPrimaryTestYieldReportList();
+    }
+
+    @Override
+    @Cacheable(value = "SystemPropertiesCache", key = "#root.methodName")
+    public ArrayList<DataInforToMesBean> geSiteInformationReportList() {
+        return vtptmtDao.geSiteInformationReportList();
+    }
+
     @Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
     @Caching(evict = {
             @CacheEvict(cacheNames = {"SystemPropertiesCache"}, key = "'getTesterStatusSingle&'+#tester"),

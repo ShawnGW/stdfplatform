@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @Aspect
@@ -58,7 +59,12 @@ public class DataSourceBeforeDeal {
             }
         }
         try {
-            proceedingJoinPoint.proceed(new Object[]{resources});
+            ArrayList<File[]> dataNeedDelete = (ArrayList<File[]>) proceedingJoinPoint.proceed(new Object[]{resources});
+            for (File[] files : dataNeedDelete) {
+                for (File file : files) {
+                    FileUtils.forceDelete(file);
+                }
+            }
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }

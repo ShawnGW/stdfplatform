@@ -50,4 +50,10 @@
     <update id="updateProperties" parameterType="com.vtest.it.stdfplatform.pojo.mes.MesProperties">
       UPDATE VTPTMT.mesconfig SET host=#{host},init_url=#{initUrl},acode=#{acode} WHERE status=TRUE ;
     </update>
+    <select id="getPrimaryTestYieldReportList" resultMap="ifInforIntoMes">
+      SELECT custom_code,device FROM VTPTMT.primary_test_Yield_report_record;
+    </select>
+    <select id="geSiteInformationReportList" resultMap="ifInforIntoMes">
+      SELECT custom_code,device FROM VTPTMT.site_information_report_record;
+    </select>
 </mapper>

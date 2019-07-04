@@ -32,4 +32,8 @@ public interface VtptmtDao {
     public MesProperties getProperties();
 
     public int updateProperties(MesProperties mesProperties);
+
+    public ArrayList<DataInforToMesBean> getPrimaryTestYieldReportList();
+
+    public ArrayList<DataInforToMesBean> geSiteInformationReportList();
 }
