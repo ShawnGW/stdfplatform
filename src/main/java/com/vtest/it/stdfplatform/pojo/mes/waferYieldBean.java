@@ -1,8 +1,9 @@
-package com.vtest.it.pojo.binwaferinfors;
+package com.vtest.it.stdfplatform.pojo.mes;
 
 import java.io.Serializable;
 
 public class waferYieldBean implements Serializable {
+    private static final long serialVersionUID = 1l;
     private String customCode;
     private String device;
     private String lotId;

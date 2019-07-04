@@ -1,13 +1,14 @@
-package com.vtest.it.pojo.datainfortomes;
+package com.vtest.it.stdfplatform.pojo.mes;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
 public class SiteYieldToMes implements Serializable {
+    private static final long serialVersionUID = 1l;
     private String lot;
     private String cpStep;
     private String waferId;
-    private HashMap<String,String> siteYieldSummary;
+    private HashMap<String, String> siteYieldSummary;
 
     public String getLot() {
         return lot;

@@ -6,6 +6,8 @@ system:
     temp-rawdata: /TempRawdata/
     file-source: /stdfTxt
     rawdata-deatails-path: /server212/RawData/RawdataDetails
+    rawdata-backup: /server212/RawData/TesterRawdatabackup
+    rawdata-details: /server212/RawData/RawdataDetails
 server:
   port: 10011
 spring:

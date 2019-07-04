@@ -1,6 +1,9 @@
-package com.vtest.it.excelModel;
+package com.vtest.it.stdfplatform.services.generateReport;
 
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFDataFormat;
 import org.apache.poi.xssf.usermodel.XSSFFont;
@@ -51,7 +54,7 @@ public class ExcelInitModel {
     public final XSSFCellStyle Bin_32;
     public final ArrayList<XSSFCellStyle> Colors_Array;
 
-    public ExcelInitModel(File model) throws IOException{
+    public ExcelInitModel(File model) throws IOException {
         workbook = new XSSFWorkbook(new FileInputStream(model));
         XSSFFont font = workbook.createFont();
         font.setFontHeight(6);
@@ -312,9 +315,9 @@ public class ExcelInitModel {
         Center_Style = workbook.createCellStyle();
         Center_Style.setAlignment(HorizontalAlignment.CENTER);
         Center_Style.setVerticalAlignment(VerticalAlignment.CENTER);
-        XSSFFont centerFont=workbook.createFont();
+        XSSFFont centerFont = workbook.createFont();
         centerFont.setFontName("Times New Roman");
-        centerFont.setFontHeightInPoints((short)9);
+        centerFont.setFontHeightInPoints((short) 9);
         Center_Style.setFont(centerFont);
 
         Left_Style = workbook.createCellStyle();

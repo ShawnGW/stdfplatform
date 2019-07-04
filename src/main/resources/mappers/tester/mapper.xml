@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vtest.it.stdfplatform.dao.tester.TesterDao">
+<mapper namespace="com.vtest.it.stdfplatform.dao.tester.TesterDataDao">
     <insert id="insertEquipmentInforToeqCardSummary" parameterType="com.vtest.it.stdfplatform.pojo.equipment.EquipmentBean">
         INSERT INTO vtdatester.eq_card_summary(custom_code, device, lot_id, cp_step, wafer_no, tester_id, prober_id, card_id, first_touchDown, first_time_range, first_test_rate, retest_touchDown, retest_time_range, retest_rate, single_test_time, test_time) VALUES (
         #{customerCode},#{device},#{lotId},#{cpStep},#{waferNo},#{testerId},#{proberId},#{cardId},#{firstTouchDown},#{firstTimeRange},#{firstTestRate},#{retestTouchDown},#{retestTimeRange},#{retestRate},#{singleTestTime},#{testTime}
@@ -34,4 +34,32 @@
         </trim>
         ;
     </insert>
+    <select id="getPrimaryTestYield"
+            resultType="com.vtest.it.stdfplatform.services.generateReport.PrimaryTestYieldReport"
+            statementType="CALLABLE">
+        {call primaryyiled_procedure(
+        #{lot,mode=IN,jdbcType=VARCHAR},#{cp,mode =IN,jdbcType=VARCHAR}
+        )}
+    </select>
+    <select id="getWaferBinSummaryUnifiedEntrance" resultMap="waferYieldMap">
+        SELECT custom_code,device,lot_id,cp_step,wafer_no,site_id,soft_bin_no,bin_count,pass_fail FROM
+        vtdatester.bin_info_summary
+        WHERE custom_code=#{customerCode}
+        <if test="waferId!=null">
+            AND wafer_no=#{waferId}
+        </if>
+        <if test="type!=null">
+            AND test_type=#{type}
+        </if>
+        <if test="cp!=null">
+            AND cp_step=#{cp}
+        </if>
+        <if test="lot!=null">
+            AND lot_id=#{lot}
+        </if>
+        <if test="device!=null">
+            AND device=#{device}
+        </if>
+        ;
+    </select>
 </mapper>

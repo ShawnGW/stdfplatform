@@ -1,6 +1,6 @@
-package com.vtest.it.tskplatform.advisor;
+package com.vtest.it.stdfplatform.advisors;
 
-import com.vtest.it.tskplatform.pojo.rawdataBean.RawdataInitBean;
+import com.vtest.it.stdfplatform.pojo.rawdataBean.RawdataInitBean;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.core.annotation.Order;
@@ -13,7 +13,7 @@ import java.util.Map;
 @Component
 @Order(2)
 public class RawdataBeanDealWithBin0 {
-    @AfterReturning(value = "execution(* generateRawdata(..)) && target(com.vtest.it.tskplatform.datadeal.GenerateRawdataInitInformation)", returning = "rawdataInitBean")
+    @AfterReturning(value = "execution(* generateRawdata(..))&&target(com.vtest.it.stdfplatform.datadeal.GenerateRawdataInitInformation)", returning = "rawdataInitBean")
     public void optimizeRawdataBeanWithBin0(RawdataInitBean rawdataInitBean) {
         try {
             HashMap<String, String> testDieMap = rawdataInitBean.getTestDieMap();

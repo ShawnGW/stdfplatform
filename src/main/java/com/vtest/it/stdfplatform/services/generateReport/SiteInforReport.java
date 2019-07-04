@@ -1,14 +1,16 @@
-package com.vtest.it.excelModel;
+package com.vtest.it.stdfplatform.services.generateReport;
 
-import com.vtest.it.dao.testermapperdao.TesterDataDAO;
-import com.vtest.it.dao.vtmesdao.VtMesConfigDAO;
-import com.vtest.it.pojo.MesConfigBean;
-import com.vtest.it.pojo.binwaferinfors.waferYieldBean;
+
+import com.vtest.it.stdfplatform.pojo.mes.MesConfigBean;
+import com.vtest.it.stdfplatform.pojo.mes.waferYieldBean;
+import com.vtest.it.stdfplatform.services.mes.impl.MesServicesImpl;
+import com.vtest.it.stdfplatform.services.tester.impl.TesterInforImpl;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -19,20 +21,13 @@ import java.util.*;
 
 @Service
 public class SiteInforReport {
-    private TesterDataDAO testerDataDAO;
-    private VtMesConfigDAO vtMesConfigDAO;
-
     @Autowired
-    public void setVtMesConfigDAO(VtMesConfigDAO vtMesConfigDAO) {
-        this.vtMesConfigDAO = vtMesConfigDAO;
-    }
-
+    private TesterInforImpl testerInfor;
     @Autowired
-    public void setTesterDataDAO(TesterDataDAO testerDataDAO) {
-        this.testerDataDAO = testerDataDAO;
-    }
+    private MesServicesImpl mesServices;
 
-    public void write(String... information) throws IOException{
+    @Async
+    public void write(String... information) throws IOException {
         HashMap<Integer, String> binDescriptions = new HashMap();
         ExcelInitModel model = new ExcelInitModel();
         ArrayList<Integer> osBins = new ArrayList<>();
@@ -42,8 +37,8 @@ public class SiteInforReport {
         infors.put("lot", information[2]);
         infors.put("cp", information[3]);
         infors.put("wafer", information[4]);
-        ArrayList<waferYieldBean> siteInforsPrimary = testerDataDAO.getWaferBinSummaryUnifiedEntrance(information[0], information[1], information[2], information[3], information[4], "P");
-        ArrayList<waferYieldBean> siteInforsRetest = testerDataDAO.getWaferBinSummaryUnifiedEntrance(information[0], information[1], information[2], information[3], information[4], "R");
+        ArrayList<waferYieldBean> siteInforsPrimary = testerInfor.getWaferBinSummaryUnifiedEntrance(information[0], information[1], information[2], information[3], information[4], "P");
+        ArrayList<waferYieldBean> siteInforsRetest = testerInfor.getWaferBinSummaryUnifiedEntrance(information[0], information[1], information[2], information[3], information[4], "R");
         Set<String> waferIdsSetPrimary = new HashSet<>();
         Set<String> waferIdsSetRetest = new HashSet<>();
         ArrayList<BysiteAndTestProcessInfors> TotalSummaryAllSiteSum = new ArrayList<>();
@@ -113,7 +108,7 @@ public class SiteInforReport {
         Set<String> checkSetPrimary = new HashSet<>();
         for (BysiteAndTestProcessInfors bean : TotalSummary) {
             if (osBins.size() == 0) {
-                MesConfigBean mesConfigBean = vtMesConfigDAO.getBean(bean.waferId, infors.get("cp"));
+                MesConfigBean mesConfigBean = mesServices.getWaferConfigFromMes(bean.waferId, infors.get("cp"));
                 String[] osBinArray = mesConfigBean.getOsBins().split(",");
                 for (String bin : osBinArray) {
                     osBins.add(Integer.valueOf(bin));
@@ -122,12 +117,10 @@ public class SiteInforReport {
             if (binDescriptions.size() == 0) {
                 try {
                     String[] descriptions;
-                    String defines=vtMesConfigDAO.getBinDescription(bean.waferId, information[3]);
-                    if (null==defines)
-                    {
-                         descriptions = "0:NA".split(";");
-                    }else
-                    {
+                    String defines = mesServices.getBinDescription(bean.waferId, information[3]);
+                    if (null == defines) {
+                        descriptions = "0:NA".split(";");
+                    } else {
                         descriptions = defines.split(";");
                     }
                     for (int i = 0; i < descriptions.length; i++) {
@@ -247,16 +240,15 @@ public class SiteInforReport {
             sheet.getRow(0).createCell(startIndex).setCellStyle(model.Center_Style);
             sheet.getRow(0).getCell(startIndex).setCellValue(bin);
             sheet.getRow(1).createCell(startIndex).setCellStyle(model.Center_Style);
-            sheet.getRow(1).getCell(startIndex).setCellValue(binDescriptions.containsKey(bin)?binDescriptions.get(bin):"NA");
+            sheet.getRow(1).getCell(startIndex).setCellValue(binDescriptions.containsKey(bin) ? binDescriptions.get(bin) : "NA");
             startIndex++;
         }
         int startRow = 2;
-        int gapStartindex=0;
+        int gapStartindex = 0;
         for (String waferId : waferIds) {
             for (int k = 0; k < resultArray.length; k++) {
-                if (k==2||k==0)
-                {
-                    gapStartindex+=3;
+                if (k == 2 || k == 0) {
+                    gapStartindex += 3;
                 }
                 for (BysiteAndTestProcessInfors bean : resultArray[k]) {
                     if (bean.waferId.equals(waferId)) {
@@ -283,7 +275,7 @@ public class SiteInforReport {
                         sheet.getRow(startRow).getCell(9).setCellValue(Double.parseDouble(String.format("%.6f", (double) bean.osBins / totalDies)));
                         if (bean.rpProcess.equals("RP1")) {
                             sheet.getRow(startRow).getCell(10).setCellStyle(model.Data_Style);
-                            sheet.getRow(startRow).getCell(10).setCellFormula("ABS(I"+(1+gapStartindex)+"-I"+(2+gapStartindex)+")");
+                            sheet.getRow(startRow).getCell(10).setCellFormula("ABS(I" + (1 + gapStartindex) + "-I" + (2 + gapStartindex) + ")");
                             sheet.getRow(startRow).getCell(11).setCellStyle(model.Data_Style);
                             Integer grossDie = 0;
                             for (BysiteAndTestProcessInfors allPrimaryBean : TotalSummaryAllSiteSum) {
@@ -298,7 +290,7 @@ public class SiteInforReport {
                             sheet.getRow(startRow).getCell(12).setCellFormula("G" + (startRow + 1) + "/F" + (startRow + 1));
                         } else {
                             sheet.getRow(startRow).getCell(10).setCellStyle(model.Data_Style);
-                            sheet.getRow(startRow).getCell(10).setCellFormula("ABS(I"+(1+gapStartindex)+"-I"+(2+gapStartindex)+")");
+                            sheet.getRow(startRow).getCell(10).setCellFormula("ABS(I" + (1 + gapStartindex) + "-I" + (2 + gapStartindex) + ")");
                         }
                         int binStartindex = 13;
                         for (Integer bin : allBins) {
@@ -312,26 +304,23 @@ public class SiteInforReport {
             }
         }
         try {
-            File directory=new File("/BysiteReportRelease/TestReportRelease/"+information[0]+"/"+information[1]+"/"+information[2]+"/"+information[3]);
-            File directory1=new File("/BysiteReportRelease/MailReportRelease/"+information[0]+"/"+information[1]+"/"+information[2]+"/"+information[3]);
-            File directory2=new File("/BysiteReport/"+information[0]+"/"+information[1]+"/"+information[2]+"/"+information[3]);
-            if (directory.exists())
-            {
+            File directory = new File("/BysiteReportRelease/TestReportRelease/" + information[0] + "/" + information[1] + "/" + information[2] + "/" + information[3]);
+            File directory1 = new File("/BysiteReportRelease/MailReportRelease/" + information[0] + "/" + information[1] + "/" + information[2] + "/" + information[3]);
+            File directory2 = new File("/BysiteReport/" + information[0] + "/" + information[1] + "/" + information[2] + "/" + information[3]);
+            if (directory.exists()) {
                 directory.mkdirs();
             }
-            if (directory1.exists())
-            {
+            if (directory1.exists()) {
                 directory1.mkdirs();
             }
-            if (directory2.exists())
-            {
+            if (directory2.exists()) {
                 directory2.mkdirs();
             }
-            File srcFile=new File("/TempBySiteReport/"+information[2]+ "_BySiteSummaryReport.xlsx");
+            File srcFile = new File("/TempBySiteReport/" + information[2] + "_BySiteSummaryReport.xlsx");
             workbook.write(new FileOutputStream(srcFile));
-            FileUtils.copyFile(srcFile,new File(directory.getPath()+"/"+srcFile.getName()));
-            FileUtils.copyFile(srcFile,new File(directory1.getPath()+"/"+srcFile.getName()));
-            FileUtils.copyFile(srcFile,new File(directory2.getPath()+"/"+srcFile.getName()));
+            FileUtils.copyFile(srcFile, new File(directory.getPath() + "/" + srcFile.getName()));
+            FileUtils.copyFile(srcFile, new File(directory1.getPath() + "/" + srcFile.getName()));
+            FileUtils.copyFile(srcFile, new File(directory2.getPath() + "/" + srcFile.getName()));
             FileUtils.forceDelete(srcFile);
             workbook.close();
         } catch (IOException e) {

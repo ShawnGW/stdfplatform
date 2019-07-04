@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+
 @Service
 @Transactional(isolation = Isolation.READ_UNCOMMITTED,propagation = Propagation.REQUIRED,transactionManager = "mesDataSourceTransactionManager",readOnly = true)
 public class MesServicesImpl implements MesServices {
@@ -54,5 +56,30 @@ public class MesServicesImpl implements MesServices {
     public CustomerCodeAndDeviceBean getCustomerAndDeviceByWaferAndCpStep(String waferId, String cpStep) {
         CustomerCodeAndDeviceBean customerCodeAndDeviceBean = mesDao.getCustomerAndDeviceByWaferAndCpStep(waferId, cpStep);
         return null == customerCodeAndDeviceBean ? new CustomerCodeAndDeviceBean() : customerCodeAndDeviceBean;
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED, transactionManager = "mesDataSourceTransactionManager")
+    public void siteYieldToMes(HashMap<String, String> siteInformation) {
+        mesDao.siteYieldToMes(siteInformation);
+    }
+
+    @Override
+    public String getBinDescription(String waferId, String cpProcess) {
+        return mesDao.getBinDescription(waferId, cpProcess);
+    }
+
+    @Override
+    @Cacheable(value = "MesInformationCache", key = "#root.methodName+'&'+#waferId+'&'+#cpProcess")
+    public String getPreviousCpStep(String waferId, String cpProcess) {
+        String result = mesDao.getPreviousCpStep(waferId, cpProcess);
+        return null == result ? "NA" : result;
+    }
+
+    @Override
+    @Cacheable(value = "MesInformationCache", key = "#root.methodName+'&'+#waferId+'&'+#cpProcess")
+    public String getTestBase(String waferId, String cpProcess) {
+        String result = mesDao.getTestBase(waferId, cpProcess);
+        return null == result ? "FULL-TEST" : result;
     }
 }

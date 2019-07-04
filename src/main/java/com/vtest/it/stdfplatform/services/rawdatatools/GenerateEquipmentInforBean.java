@@ -1,16 +1,15 @@
-package com.vtest.it.rawdatafterdeal;
+package com.vtest.it.stdfplatform.services.rawdatatools;
 
-import com.vtest.it.pojo.equipment.EquipmentBean;
-import com.vtest.it.rawdatainformationBean.RawdataInitBean;
+import com.vtest.it.stdfplatform.pojo.equipment.EquipmentBean;
+import com.vtest.it.stdfplatform.pojo.rawdataBean.RawdataInitBean;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
 
 @Service
 public class GenerateEquipmentInforBean {
-    public void generate(RawdataInitBean rawdataInitBean, EquipmentBean equipmentBean)
-    {
-        LinkedHashMap<String,String> properties=rawdataInitBean.getProperties();
+    public void generate(RawdataInitBean rawdataInitBean, EquipmentBean equipmentBean) {
+        LinkedHashMap<String, String> properties = rawdataInitBean.getProperties();
         equipmentBean.setCustomerCode(properties.get("Customer Code"));
         equipmentBean.setDevice(properties.get("Device Name"));
         equipmentBean.setLotId(properties.get("Lot ID"));

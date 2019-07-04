@@ -1,4 +1,4 @@
-package com.vtest.it.pojo.excel;
+package com.vtest.it.stdfplatform.pojo.mes;
 
 import java.io.Serializable;
 

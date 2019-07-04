@@ -1,11 +1,12 @@
-package com.vtest.it.excelModel;
+package com.vtest.it.stdfplatform.services.generateReport;
 
-import com.vtest.it.dao.testermapperdao.TesterDataDAO;
-import com.vtest.it.pojo.excel.PrimaryTestYieldBean;
+import com.vtest.it.stdfplatform.pojo.mes.PrimaryTestYieldBean;
+import com.vtest.it.stdfplatform.services.tester.impl.TesterInforImpl;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -15,15 +16,12 @@ import java.util.*;
 
 @Service
 public class PrimaryTestYieldReport {
-    private TesterDataDAO testerDataDAO;
-
     @Autowired
-    public void setTesterDataDAO(TesterDataDAO testerDataDAO) {
-        this.testerDataDAO = testerDataDAO;
-    }
+    private TesterInforImpl testerInfor;
 
+    @Async
     public void write(String customerCode, String device, String lot, String cpStep) throws IOException {
-        ArrayList<PrimaryTestYieldBean> list = testerDataDAO.getPrimaryTestYield(lot, cpStep);
+        ArrayList<PrimaryTestYieldBean> list = testerInfor.getPrimaryTestYield(lot, cpStep);
         Set<Integer> siteSet = new TreeSet<>();
         ExcelInitModel model = new ExcelInitModel();
         TreeMap<String, TreeMap<Integer, Double>> resultMap = new TreeMap<>();
@@ -84,6 +82,6 @@ public class PrimaryTestYieldReport {
         FileUtils.copyFile(srcFile, new File(directory.getPath() + "/" + srcFile.getName()));
         FileUtils.copyFile(srcFile, new File(directory1.getPath() + "/" + srcFile.getName()));
         FileUtils.copyFile(srcFile, new File(directory2.getPath() + "/" + srcFile.getName()));
-//        FileUtils.forceDelete(srcFile);
+        FileUtils.forceDelete(srcFile);
     }
 }

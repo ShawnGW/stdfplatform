@@ -2,6 +2,7 @@ package com.vtest.it.stdfplatform.services.rawdataCheck;
 
 
 import com.vtest.it.stdfplatform.pojo.mes.CustomerCodeAndDeviceBean;
+import com.vtest.it.stdfplatform.pojo.system.WaferInitInformationBean;
 import com.vtest.it.stdfplatform.pojo.vtptmt.DataParseIssueBean;
 import com.vtest.it.stdfplatform.services.mes.impl.MesServicesImpl;
 import org.apache.commons.io.FileUtils;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @Service
@@ -19,8 +21,6 @@ public class GetIssueBean {
     private String errorPath;
     @Autowired
     private MesServicesImpl getMesInfor;
-    @Autowired
-    private TskProberMappingParseCpAndWaferId tskProberMappingParseCpAndWaferId;
 
     public DataParseIssueBean getDataBean(HashMap<String, String> waferInfor, int level, String descripth) {
         DataParseIssueBean dataParseIssueBean = new DataParseIssueBean();
@@ -38,15 +38,14 @@ public class GetIssueBean {
         return dataParseIssueBean;
     }
 
-    public DataParseIssueBean getDataBeanForException(int level, String description, File file, String waferId, String lot) throws IOException {
-        String cpProcess = tskProberMappingParseCpAndWaferId.parse(file).split(":")[1];
-        CustomerCodeAndDeviceBean customerCodeAndDeviceBean = getMesInfor.getCustomerAndDeviceByWaferAndCpStep(waferId, cpProcess);
+    public DataParseIssueBean getDataBeanForException(int level, String description, WaferInitInformationBean waferInitInformationBean, ArrayList<File> waferIdOrderList) throws IOException {
+        CustomerCodeAndDeviceBean customerCodeAndDeviceBean = getMesInfor.getCustomerAndDeviceByWaferAndCpStep(waferInitInformationBean.getWaferId(), waferInitInformationBean.getCp());
         HashMap<String, String> waferInfor = new HashMap<>();
         waferInfor.put("customCode", customerCodeAndDeviceBean.getCustomerCode());
         waferInfor.put("device", customerCodeAndDeviceBean.getDevice());
-        waferInfor.put("lot", lot);
-        waferInfor.put("cpStep", cpProcess);
-        waferInfor.put("waferNo", waferId);
+        waferInfor.put("lot", waferInitInformationBean.getLot());
+        waferInfor.put("cpStep", waferInitInformationBean.getCp());
+        waferInfor.put("waferNo", waferInitInformationBean.getWaferId());
         waferInfor.put("resource", "STDF");
         DataParseIssueBean dataParseIssueBean = getDataBean(waferInfor, level, description);
         if (description.equals("there are error in file coding")) {
@@ -54,10 +53,11 @@ public class GetIssueBean {
         } else {
             dataParseIssueBean.setIssueType("mes information");
         }
-        dataParseIssueBean.setIssuePath(errorPath + "mappingParseError/" + lot + "/" + file.getName());
-        FileUtils.copyFile(file, new File(errorPath + "mappingParseError/" + lot + "/" + file.getName()));
+        dataParseIssueBean.setIssuePath("files has been deleted,because it was transformed from stdf file");
         try {
-            FileUtils.forceDelete(file);
+            for (File file : waferIdOrderList) {
+                FileUtils.forceDelete(file);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
