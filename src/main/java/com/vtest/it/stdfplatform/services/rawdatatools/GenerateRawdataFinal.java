@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @Service
 public class GenerateRawdataFinal {
-    @Value("${system.properties.tsk.rawdata-path}")
+    @Value("${system.properties.stdf.rawdata-path}")
     private String rawdataPath;
 
     public void generateFinalRawdata(File file, RawdataInitBean rawdataInitBean) {

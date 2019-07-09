@@ -40,25 +40,25 @@ public class VtptmtInforImpl implements VtptmtInfor {
     }
 
     @Override
-    @Cacheable(cacheNames = {"SystemPropertiesCache"}, key = "#root.methodName")
+    @Cacheable(cacheNames = {"SystemPropertiesCache"}, key = "'stdf&'+#root.methodName")
     public ArrayList<CheckItemBean> getCheckItemList() {
         return vtptmtDao.getCheckItemList();
     }
 
     @Override
-    @Cacheable(cacheNames = {"SystemPropertiesCache"}, key = "#root.methodName")
+    @Cacheable(cacheNames = {"SystemPropertiesCache"}, key = "'stdf&'+#root.methodName")
     public ArrayList<DataInforToMesBean> getList() {
         return vtptmtDao.getList();
     }
 
     @Override
-    @Cacheable(cacheNames = {"SystemPropertiesCache"}, key = "#root.methodName")
+    @Cacheable(cacheNames = {"SystemPropertiesCache"}, key = "'stdf&'+#root.methodName")
     public ArrayList<BinWaferInforBean> getTesterStatus() {
         return vtptmtDao.getTesterStatus();
     }
 
     @Override
-    @Cacheable(cacheNames = {"SystemPropertiesCache"}, key = "#root.methodName+'&'+#tester")
+    @Cacheable(cacheNames = {"SystemPropertiesCache"}, key = "'stdf&'+#root.methodName+'&'+#tester")
     public BinWaferInforBean getTesterStatusSingle(String tester) {
         return vtptmtDao.getTesterStatusSingle(tester);
     }
@@ -76,25 +76,25 @@ public class VtptmtInforImpl implements VtptmtInfor {
     }
 
     @Override
-    @Cacheable(cacheNames = {"SystemPropertiesCache"}, key = "#root.methodName")
+    @Cacheable(cacheNames = {"SystemPropertiesCache"}, key = "'stdf&'+#root.methodName")
     public MesProperties getProperties() {
         return vtptmtDao.getProperties();
     }
 
     @Override
-    @CacheEvict(cacheNames = {"SystemPropertiesCache"}, key = "'getProperties'")
+    @CacheEvict(cacheNames = {"SystemPropertiesCache"}, key = "'stdf&'+'getProperties'")
     public int updateProperties(MesProperties mesProperties) {
         return vtptmtDao.updateProperties(mesProperties);
     }
 
     @Override
-    @Cacheable(value = "SystemPropertiesCache", key = "#root.methodName")
+    @Cacheable(value = "SystemPropertiesCache", key = "'stdf&'+#root.methodName")
     public ArrayList<DataInforToMesBean> getPrimaryTestYieldReportList() {
         return vtptmtDao.getPrimaryTestYieldReportList();
     }
 
     @Override
-    @Cacheable(value = "SystemPropertiesCache", key = "#root.methodName")
+    @Cacheable(value = "SystemPropertiesCache", key = "'stdf&'+#root.methodName")
     public ArrayList<DataInforToMesBean> geSiteInformationReportList() {
         return vtptmtDao.geSiteInformationReportList();
     }

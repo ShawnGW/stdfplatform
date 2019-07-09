@@ -18,7 +18,7 @@ import java.util.TreeMap;
 
 @Service
 public class GenerateRawdata {
-    @Value("${system.properties.tsk.temp-rawdata}")
+    @Value("${system.properties.stdf.temp-rawdata}")
     private String TempRawdata;
     @Autowired
     private GetRandomChar getRandomChar;

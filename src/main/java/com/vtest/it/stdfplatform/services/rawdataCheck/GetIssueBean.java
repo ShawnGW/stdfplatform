@@ -17,7 +17,7 @@ import java.util.HashMap;
 
 @Service
 public class GetIssueBean {
-    @Value("${system.properties.tsk.error-path}")
+    @Value("${system.properties.stdf.error-path}")
     private String errorPath;
     @Autowired
     private MesServicesImpl getMesInfor;

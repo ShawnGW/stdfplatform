@@ -29,7 +29,7 @@ public class GenerateRawdataInitInformation {
         } catch (Exception e) {
             throw new Exception("there are error in file coding");
         }
-        MesConfigBean mesConfigBean = getMesInfor.getWaferConfigFromMes(waferInitInformationBean.getCp(), waferInitInformationBean.getCp());
+        MesConfigBean mesConfigBean = getMesInfor.getWaferConfigFromMes(waferInitInformationBean.getWaferId(), waferInitInformationBean.getCp());
         if (null == mesConfigBean.getInnerLot()) {
             throw new Exception("can't find this wafer in mes system : no such wafer or cpProcess");
         }

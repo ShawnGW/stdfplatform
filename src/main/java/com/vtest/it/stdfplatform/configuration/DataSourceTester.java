@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 @Configuration
-@MapperScan(basePackages = {"com.vtest.it.stdfplatform.dao.tester.TesterDao"},sqlSessionTemplateRef ="testerSqlSessionTemplate")
+@MapperScan(basePackages = {"com.vtest.it.stdfplatform.dao.tester"}, sqlSessionTemplateRef = "testerSqlSessionTemplate")
 public class DataSourceTester {
     @Bean(value = "testerDataSource",initMethod = "init",destroyMethod = "close")
     @ConfigurationProperties(prefix = "spring.datasource.druid.tester")

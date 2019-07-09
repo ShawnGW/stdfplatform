@@ -33,10 +33,12 @@ public class SpecialTestBaseDeal {
                 String customer = rawdataInitBean.getProperties().get("Customer Code");
                 String device = rawdataInitBean.getProperties().get("Device Name");
                 String lot = rawdataInitBean.getProperties().get("Lot ID");
-                File previousRawdata = new File(rawdataBackup + "/" + customer + "/" + device + "/" + lot + "/" + previousCpProcess + "/" + waferId + ".raw");
-                parseRawdata parseRawdata = new parseRawdata(previousRawdata);
-                HashMap<String, String> hardBinTestDieMap = parseRawdata.getHardBinTestDie();
-                HashMap<String, String> softBinTestDieMap = parseRawdata.getSoftBinTestDie();
+                if (!"NA".equals(previousCpProcess.toUpperCase())) {
+                    File previousRawdata = new File(rawdataBackup + "/" + customer + "/" + device + "/" + lot + "/" + previousCpProcess + "/" + waferId + ".raw");
+                    parseRawdata parseRawdata = new parseRawdata(previousRawdata);
+                    HashMap<String, String> hardBinTestDieMap = parseRawdata.getHardBinTestDie();
+                    HashMap<String, String> softBinTestDieMap = parseRawdata.getSoftBinTestDie();
+                }
 
             }
         } catch (Exception e) {

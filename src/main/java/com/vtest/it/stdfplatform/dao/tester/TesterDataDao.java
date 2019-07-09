@@ -3,7 +3,7 @@ package com.vtest.it.stdfplatform.dao.tester;
 
 import com.vtest.it.stdfplatform.pojo.equipment.EquipmentBean;
 import com.vtest.it.stdfplatform.pojo.mes.PrimaryTestYieldBean;
-import com.vtest.it.stdfplatform.pojo.mes.waferYieldBean;
+import com.vtest.it.stdfplatform.pojo.tester.waferYieldBean;
 import com.vtest.it.stdfplatform.pojo.vtptmt.BinWaferInforBean;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

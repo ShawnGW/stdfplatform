@@ -1,7 +1,7 @@
 system:
  properties:
   stdf:
-    rawdata-path: /server212/RawData/TesterRawdata
+    rawdata-path: /server212/RawData/TesterRawdata/
     error-path: /server212/SeriousEorrMapping/
     temp-rawdata: /TempRawdata/
     file-source: /stdfTxt

@@ -2,7 +2,7 @@ package com.vtest.it.stdfplatform.services.generateReport;
 
 
 import com.vtest.it.stdfplatform.pojo.mes.MesConfigBean;
-import com.vtest.it.stdfplatform.pojo.mes.waferYieldBean;
+import com.vtest.it.stdfplatform.pojo.tester.waferYieldBean;
 import com.vtest.it.stdfplatform.services.mes.impl.MesServicesImpl;
 import com.vtest.it.stdfplatform.services.tester.impl.TesterInforImpl;
 import org.apache.commons.io.FileUtils;

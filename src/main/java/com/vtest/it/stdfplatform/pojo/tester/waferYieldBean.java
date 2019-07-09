@@ -1,4 +1,4 @@
-package com.vtest.it.stdfplatform.pojo.mes;
+package com.vtest.it.stdfplatform.pojo.tester;
 
 import java.io.Serializable;
 

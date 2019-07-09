@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.vtest.it.stdfplatform.dao.mes.MesDao">
-    <resultMap id="waferYieldMap" type="com.vtest.it.stdfplatform.pojo.mes.waferYieldBean">
-        <result property="customCode" column="custom_code"/>
-        <result property="device" column="device"/>
-        <result property="lotId" column="lot_id"/>
-        <result property="cpStep" column="cp_step"/>
-        <result property="waferNo" column="wafer_no"/>
-        <result property="siteId" column="site_id"/>
-        <result property="softBinNo" column="soft_bin_no"/>
-        <result property="binCount" column="bin_count"/>
-        <result property="passFail" column="pass_fail"/>
-    </resultMap>
     <resultMap id="customerAndDevice" type="com.vtest.it.stdfplatform.pojo.mes.CustomerCodeAndDeviceBean">
         <result property="customerCode" column="CustCode"/>
         <result property="device" column="CustPart"/>
@@ -40,10 +29,10 @@
           #{waferId,mode=IN,jdbcType=VARCHAR},#{cpProcess,mode =IN,jdbcType=VARCHAR}
         )}
     </select>
-    <select id="getPreviousCpStep" statementType="CALLABLE">
+    <select id="getPreviousCpStep" statementType="CALLABLE" resultType="string">
         {call WebMES.dbo.pro_GetLaststep(#{waferId,mode=IN,jdbcType=VARCHAR},#{cpProcess,mode=IN,jdbcType=VARCHAR})}
     </select>
-    <select id="getTestBase" statementType="CALLABLE">
-        {call WebMES.dbo.pro_GetTestBase(#{waferId,mode=IN,jdbcType=VARCHAR},#{cpProcess,mode=IN,jdbcType=VARCHAR}))}
+    <select id="getTestBase" statementType="CALLABLE" resultType="string">
+        {call WebMES.dbo.pro_GetTestBase(#{waferId,mode=IN,jdbcType=VARCHAR},#{cpProcess,mode=IN,jdbcType=VARCHAR})}
     </select>
 </mapper>
