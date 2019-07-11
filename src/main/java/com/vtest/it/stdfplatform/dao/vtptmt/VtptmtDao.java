@@ -35,5 +35,5 @@ public interface VtptmtDao {
 
     public ArrayList<DataInforToMesBean> getPrimaryTestYieldReportList();
 
-    public ArrayList<DataInforToMesBean> geSiteInformationReportList();
+    public ArrayList<DataInforToMesBean> getSiteInformationReportList();
 }

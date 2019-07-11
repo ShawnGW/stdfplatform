@@ -317,6 +317,9 @@ public class SiteInforReport {
                 directory2.mkdirs();
             }
             File srcFile = new File("/TempBySiteReport/" + information[2] + "_BySiteSummaryReport.xlsx");
+            if (!new File("/TempBySiteReport/").exists()) {
+                new File("/TempBySiteReport/").mkdirs();
+            }
             workbook.write(new FileOutputStream(srcFile));
             FileUtils.copyFile(srcFile, new File(directory.getPath() + "/" + srcFile.getName()));
             FileUtils.copyFile(srcFile, new File(directory1.getPath() + "/" + srcFile.getName()));

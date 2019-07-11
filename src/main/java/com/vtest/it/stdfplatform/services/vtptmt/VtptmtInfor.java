@@ -31,5 +31,5 @@ public interface VtptmtInfor {
 
     public ArrayList<DataInforToMesBean> getPrimaryTestYieldReportList();
 
-    public ArrayList<DataInforToMesBean> geSiteInformationReportList();
+    public ArrayList<DataInforToMesBean> getSiteInformationReportList();
 }

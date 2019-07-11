@@ -95,8 +95,8 @@ public class VtptmtInforImpl implements VtptmtInfor {
 
     @Override
     @Cacheable(value = "SystemPropertiesCache", key = "'stdf&'+#root.methodName")
-    public ArrayList<DataInforToMesBean> geSiteInformationReportList() {
-        return vtptmtDao.geSiteInformationReportList();
+    public ArrayList<DataInforToMesBean> getSiteInformationReportList() {
+        return vtptmtDao.getSiteInformationReportList();
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
