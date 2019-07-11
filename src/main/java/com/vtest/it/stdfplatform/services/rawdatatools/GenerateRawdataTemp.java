@@ -4,6 +4,7 @@ package com.vtest.it.stdfplatform.services.rawdatatools;
 import com.vtest.it.stdfplatform.pojo.rawdataBean.RawdataInitBean;
 import com.vtest.it.stdfplatform.pojo.vtptmt.DataParseIssueBean;
 import com.vtest.it.stdfplatform.services.rawdataCheck.RawDataCheck;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,9 @@ public class GenerateRawdataTemp {
     @Autowired
     private GeneratePrimaryAndReTestMap generatePrimaryAndReTestMap;
     public boolean generateTempRawdata(RawdataInitBean rawdataInitBean, ArrayList<DataParseIssueBean> dataParseIssueBeans) throws Exception {
-        File tempRawdata = generateRawdata.generate(rawdataInitBean);
+        RawdataInitBean rawdataInitBeanTarget = new RawdataInitBean();
+        BeanUtils.copyProperties(rawdataInitBean, rawdataInitBeanTarget);
+        File tempRawdata = generateRawdata.generate(rawdataInitBeanTarget);
         boolean checkFlag = rawDataCheck.check(tempRawdata, dataParseIssueBeans);
         if (!checkFlag) {
             return false;

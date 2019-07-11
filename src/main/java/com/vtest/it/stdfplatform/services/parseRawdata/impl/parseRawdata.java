@@ -20,6 +20,8 @@ public class parseRawdata implements GetPropertiesFromRawdata, GetBinSummaryFrom
     private LinkedHashMap<String, String> properties = new LinkedHashMap<>();
     private HashMap<String, String> hardBinTestDieMap = new HashMap<>();
     private HashMap<String, String> softBinTestDieMap = new HashMap<>();
+    private HashMap<String, String> siteBinTestDieMap = new HashMap<>();
+
     private String[][] hardBinTestDiesDimensionalArray = new String[800][800];
     private String[][] softBinTestDiesDimensionalArray = new String[800][800];
     private String[][] markAndSkipDiesDimensionalArray = new String[800][800];
@@ -86,8 +88,10 @@ public class parseRawdata implements GetPropertiesFromRawdata, GetBinSummaryFrom
                     Integer colCoordinate = Integer.valueOf(content.substring(0, 4).trim());
                     String hardbin = content.substring(8, 12).trim();
                     String softbin = content.substring(12, 16).trim();
+                    String site = content.substring(16, 20).trim();
                     hardBinTestDieMap.put(rowCoordinate + ":" + colCoordinate, hardbin);
                     softBinTestDieMap.put(rowCoordinate + ":" + colCoordinate, softbin);
+                    siteBinTestDieMap.put(rowCoordinate + ":" + colCoordinate, site);
                 }
                 if (markAndSkipFlag) {
                     Integer rowCoordinate = Integer.valueOf(content.substring(4, 8).trim());
@@ -133,6 +137,9 @@ public class parseRawdata implements GetPropertiesFromRawdata, GetBinSummaryFrom
         return hardBinTestDieMap;
     }
 
+    public HashMap<String, String> getSiteBinTestDieMap() {
+        return siteBinTestDieMap;
+    }
     @Override
     public HashMap<String, String> getSoftBinTestDie() {
         // TODO Auto-generated method stub

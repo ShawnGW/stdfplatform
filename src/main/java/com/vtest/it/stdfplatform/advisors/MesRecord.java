@@ -49,9 +49,11 @@ public class MesRecord {
     public void record(RawdataInitBean rawdataInitBean, boolean checkFlag) {
         try {
             if (checkFlag && !vtptmtServices.checkDeviceIfInsetIntoMes(rawdataInitBean.getProperties().get("Customer Code"), rawdataInitBean.getProperties().get("Device Name"))) {
-                waferIdBinSummaryWrite.write(rawdataInitBean);
+                String testBase = mesServices.getTestBase(rawdataInitBean.getProperties().get("Wafer ID"), rawdataInitBean.getProperties().get("CP Process"));
+                if (testBase.equals("FULL-TEST")) {
+                    waferIdBinSummaryWrite.write(rawdataInitBean);
+                }
                 stdfTouchDownWrite.write(rawdataInitBean);
-
                 ArrayList<Integer> osBinArray = new ArrayList<>();
                 String[] osBins = rawdataInitBean.getProperties().get("OS Bins").split(",");
                 for (int i = 0; i < osBins.length; i++) {
