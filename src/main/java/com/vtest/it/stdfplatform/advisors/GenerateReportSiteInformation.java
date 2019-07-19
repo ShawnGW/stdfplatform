@@ -22,7 +22,7 @@ public class GenerateReportSiteInformation {
             try {
                 String customerCode = rawdataInitBean.getProperties().get("Customer Code");
                 String device = rawdataInitBean.getProperties().get("Device Name");
-                if (flag && vtptmtServices.checkDeviceIfGenerateSiteInformationReport(customerCode, device)) {
+                if (vtptmtServices.checkDeviceIfGenerateSiteInformationReport(customerCode, device)) {
                     String lot = rawdataInitBean.getProperties().get("Lot ID");
                     String cpStep = rawdataInitBean.getProperties().get("CP Process");
                     siteInforReport.write(customerCode, device, lot, cpStep, null, null);

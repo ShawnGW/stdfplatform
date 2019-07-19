@@ -19,12 +19,14 @@ public class GenerateReportPrimaryTestYield {
     @AfterReturning(value = "execution(* com.vtest.it.stdfplatform.services.rawdatatools.GenerateRawdataTemp.generateTempRawdata(..))&&args(rawdataInitBean,..)", returning = "flag")
     public void generateReport(RawdataInitBean rawdataInitBean, boolean flag) {
         try {
-            String customerCode = rawdataInitBean.getProperties().get("Customer Code");
-            String device = rawdataInitBean.getProperties().get("Device Name");
-            if (flag && vtptmtServices.checkDeviceIfGeneratePrimaryYieldReport(customerCode, device)) {
-                String lot = rawdataInitBean.getProperties().get("Lot ID");
-                String cpStep = rawdataInitBean.getProperties().get("CP Process");
-                primaryTestYieldReport.write(customerCode, device, lot, cpStep);
+            if (flag) {
+                String customerCode = rawdataInitBean.getProperties().get("Customer Code");
+                String device = rawdataInitBean.getProperties().get("Device Name");
+                if (vtptmtServices.checkDeviceIfGeneratePrimaryYieldReport(customerCode, device)) {
+                    String lot = rawdataInitBean.getProperties().get("Lot ID");
+                    String cpStep = rawdataInitBean.getProperties().get("CP Process");
+                    primaryTestYieldReport.write(customerCode, device, lot, cpStep);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -286,7 +286,7 @@ public class StdfTesterMappingParse {
 		bean.setReTestRate((double)reTestDies*100/(passDies+failDies));
 		bean.setReTestTouchDownTimes(reTestKeySet.size());
 		bean.setReTestTouchDownDuringTime(reTestTouchDownDuringTime);
-		bean.setSingleTouchDownDuringTime(passTouchDownTotoalTimes/passTouchDownNumber);
+        bean.setSingleTouchDownDuringTime(passTouchDownNumber == 0 ? 0 : passTouchDownTotoalTimes / passTouchDownNumber);
 		bean.setTestDuringTime(timeAndTimes.testTime);
 	}
 	private HashMap<String, String> getWaferIdInfors(File file)

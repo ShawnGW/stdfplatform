@@ -37,7 +37,7 @@ public class SpecialTestBaseDeal {
             String waferId = rawdataInitBean.getProperties().get("Wafer ID");
             String cpProcess = rawdataInitBean.getProperties().get("CP Process");
             String testBase = mesServices.getTestBase(waferId, cpProcess);
-            if (!testBase.equals("FULL-TEST")) {
+            if (!testBase.toUpperCase().equals("FULL-TEST")) {
                 String previousCpProcess = mesServices.getPreviousCpStep(waferId, cpProcess);
                 String customer = rawdataInitBean.getProperties().get("Customer Code");
                 String device = rawdataInitBean.getProperties().get("Device Name");

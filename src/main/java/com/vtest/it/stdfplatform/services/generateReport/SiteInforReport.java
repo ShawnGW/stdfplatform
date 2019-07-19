@@ -142,7 +142,7 @@ public class SiteInforReport {
             if (checkSetPrimary.contains(bean.waferId)) {
                 for (BysiteAndTestProcessInfors siteSummary : TotalSummaryAllSiteSum) {
                     if (siteSummary.waferId.equals(bean.waferId)) {
-                        siteSummary.setPassBins(siteSummary.passBins + bean.passBins);
+                        siteSummary.setPassBins((null == bean.passBins ? 0 : bean.passBins) + (null == siteSummary.passBins ? 0 : siteSummary.passBins));
                         siteSummary.setOsBins(siteSummary.osBins + bean.osBins);
                         TreeMap<Integer, Integer> tempMap = new TreeMap<>();
                         for (Map.Entry<Integer, Integer> entry : siteSummary.binSummary.entrySet()) {
@@ -267,7 +267,7 @@ public class SiteInforReport {
                         sheet.getRow(startRow).getCell(3).setCellValue(bean.rpProcess);
                         sheet.getRow(startRow).getCell(4).setCellValue(bean.siteNo.length() == 1 ? "Site" + bean.siteNo : bean.siteNo);
                         sheet.getRow(startRow).getCell(5).setCellValue(totalDies);
-                        sheet.getRow(startRow).getCell(6).setCellValue(bean.passBins);
+                        sheet.getRow(startRow).getCell(6).setCellValue(null == bean.passBins ? 0 : bean.passBins);
                         sheet.getRow(startRow).getCell(7).setCellFormula("F" + (startRow + 1) + "-G" + (startRow + 1));
                         sheet.getRow(startRow).getCell(8).setCellFormula("G" + (startRow + 1) + "/F" + (startRow + 1));
                         sheet.getRow(startRow).getCell(8).setCellStyle(model.Data_Style);

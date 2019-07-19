@@ -48,9 +48,9 @@ public class MesRecord {
     @AfterReturning(value = "perfectRawdataBeanMethod()&&args(rawdataInitBean,*)", returning = "checkFlag")
     public void record(RawdataInitBean rawdataInitBean, boolean checkFlag) {
         try {
-            if (checkFlag && !vtptmtServices.checkDeviceIfInsetIntoMes(rawdataInitBean.getProperties().get("Customer Code"), rawdataInitBean.getProperties().get("Device Name"))) {
+            if (checkFlag && vtptmtServices.checkDeviceIfInsetIntoMes(rawdataInitBean.getProperties().get("Customer Code"), rawdataInitBean.getProperties().get("Device Name"))) {
                 String testBase = mesServices.getTestBase(rawdataInitBean.getProperties().get("Wafer ID"), rawdataInitBean.getProperties().get("CP Process"));
-                if (testBase.equals("FULL-TEST")) {
+                if (testBase.toUpperCase().equals("FULL-TEST")) {
                     waferIdBinSummaryWrite.write(rawdataInitBean);
                 }
                 stdfTouchDownWrite.write(rawdataInitBean);
