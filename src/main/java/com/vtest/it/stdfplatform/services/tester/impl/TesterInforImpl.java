@@ -49,6 +49,11 @@ public class TesterInforImpl implements TesterInfor {
     }
 
     @Override
+    public int insertEquipmentInforToeqCardSummaryHis(EquipmentBean equipmentBean) {
+        return testerDataDAO.insertEquipmentInforToeqCardSummaryHis(equipmentBean);
+    }
+
+    @Override
     public void singleWaferDeal(String customerCode, String device, String lot, String cp, String waferId, RawdataInitBean rawdataInitBean) {
         String[] passBins = rawdataInitBean.getProperties().get("Pass Bins").split(",");
         ArrayList<Integer> passBinsArray = new ArrayList<>();
@@ -67,6 +72,7 @@ public class TesterInforImpl implements TesterInfor {
         EquipmentBean equipmentBean = new EquipmentBean();
         generateEquipmentInforBean.generate(rawdataInitBean, equipmentBean);
         testerDataDAO.insertEquipmentInforToeqCardSummary(equipmentBean);
+        testerDataDAO.insertEquipmentInforToeqCardSummaryHis(equipmentBean);
     }
 
     @Override

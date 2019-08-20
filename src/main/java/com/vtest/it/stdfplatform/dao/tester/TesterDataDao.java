@@ -19,6 +19,8 @@ public interface TesterDataDao {
 
     public int insertEquipmentInforToeqCardSummary(EquipmentBean equipmentBean);
 
+    public int insertEquipmentInforToeqCardSummaryHis(EquipmentBean equipmentBean);
+
     public int insertWaferInforToBinWaferSummary(BinWaferInforBean binWaferInforBean);
 
     public ArrayList<waferYieldBean> getWaferBinSummaryUnifiedEntrance(@Param("customerCode") String customerCode, @Param("device") String device, @Param("lot") String lot, @Param("cp") String cp, @Param("waferId") String waferId, @Param("type") String type);

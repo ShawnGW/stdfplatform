@@ -18,6 +18,8 @@ public interface TesterInfor {
 
     public int insertWaferInforToBinWaferSummary(BinWaferInforBean binWaferInforBean);
 
+    public int insertEquipmentInforToeqCardSummaryHis(EquipmentBean equipmentBean);
+
     public void singleWaferDeal(String customerCode, String device, String lot, String cp, String waferId, RawdataInitBean rawdataInitBean);
 
     public ArrayList<waferYieldBean> getWaferBinSummaryUnifiedEntrance(String customerCode, String device, String lot, String cp, String waferId, String type);

@@ -101,8 +101,8 @@ public class VtptmtInforImpl implements VtptmtInfor {
 
     @Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
     @Caching(evict = {
-            @CacheEvict(cacheNames = {"SystemPropertiesCache"}, key = "'getTesterStatusSingle&'+#tester"),
-            @CacheEvict(cacheNames = {"SystemPropertiesCache"}, key = "'getTesterStatus'")
+            @CacheEvict(cacheNames = {"SystemPropertiesCache"}, key = "'stdf&getTesterStatusSingle&'+#tester"),
+            @CacheEvict(cacheNames = {"SystemPropertiesCache"}, key = "'stdf&getTesterStatus'")
     })
     public void singleWaferDeal(BinWaferInforBean binWaferInforBean, String waferId, String cpProcess, String tester) {
         vtptmtDao.insertWaferInforToBinWaferSummary(binWaferInforBean);
