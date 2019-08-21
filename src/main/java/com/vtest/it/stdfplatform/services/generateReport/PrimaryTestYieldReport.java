@@ -6,6 +6,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,12 @@ import java.util.*;
 public class PrimaryTestYieldReport {
     @Autowired
     private TesterInforImpl testerInfor;
-
+    @Value("${system.properties.stdf.report-path}")
+    private String reportPath;
+    @Value("${system.properties.stdf.report-ftp-path}")
+    private String reportFtpPath;
+    @Value("${system.properties.stdf.report-mail-path}")
+    private String reportMailPath;
     @Async
     public void write(String customerCode, String device, String lot, String cpStep) throws IOException {
         ArrayList<PrimaryTestYieldBean> list = testerInfor.getPrimaryTestYield(lot, cpStep);
@@ -64,9 +70,9 @@ public class PrimaryTestYieldReport {
             }
             row++;
         }
-        File directory = new File("/BysiteReportRelease/TestReportRelease/" + customerCode + "/" + device + "/" + lot + "/" + cpStep);
-        File directory1 = new File("/BysiteReportRelease/MailReportRelease/" + customerCode + "/" + device + "/" + lot + "/" + cpStep);
-        File directory2 = new File("/BysiteReport/" + customerCode + "/" + device + "/" + lot + "/" + cpStep);
+        File directory = new File(reportFtpPath + customerCode + "/" + device + "/" + lot + "/" + cpStep);
+        File directory1 = new File(reportMailPath + customerCode + "/" + device + "/" + lot + "/" + cpStep);
+        File directory2 = new File(reportPath + customerCode + "/" + device + "/" + lot + "/" + cpStep);
         if (directory.exists()) {
             directory.mkdirs();
         }

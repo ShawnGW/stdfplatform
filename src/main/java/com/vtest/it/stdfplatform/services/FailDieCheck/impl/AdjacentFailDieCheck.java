@@ -40,7 +40,12 @@ public class AdjacentFailDieCheck extends AbstractRawDataAfterDeal {
                 String value = testDieMap.get(coordinate).substring(4, 8).trim();
                 testDie[y][x] = value;
             }
-            ArrayList<Set<String>> failDieChains = adjacentFailDieCheckTool.check(testDie, TestDieRow, TestDieCol, passBins);
+            ArrayList<Set<String>> failDieChains = new ArrayList<>();
+            try {
+                failDieChains = adjacentFailDieCheckTool.check(testDie, TestDieRow, TestDieCol, passBins);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             HashMap<String, Boolean> checkResult = new HashMap<>();
             for (Set<String> node : failDieChains) {
                 if (checkResult.values().size() > 0 && !checkResult.values().contains(false)) {

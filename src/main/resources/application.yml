@@ -8,6 +8,10 @@ system:
     rawdata-deatails-path: /server212/RawData/RawdataDetails
     rawdata-backup: /server212/RawData/TesterRawdatabackup
     rawdata-details: /server212/RawData/RawdataDetails
+    report-path: /BysiteReport/
+    report-mail-path: /BysiteReportRelease/MailReportRelease/
+    report-ftp-path: /BysiteReportRelease/TestReportRelease/
+
 server:
   port: 10011
 spring:

@@ -10,6 +10,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,12 @@ public class SiteInforReport {
     private TesterInforImpl testerInfor;
     @Autowired
     private MesServicesImpl mesServices;
-
+    @Value("${system.properties.stdf.report-path}")
+    private String reportPath;
+    @Value("${system.properties.stdf.report-ftp-path}")
+    private String reportFtpPath;
+    @Value("${system.properties.stdf.report-mail-path}")
+    private String reportMailPath;
     @Async
     public void write(String... information) throws IOException {
         HashMap<Integer, String> binDescriptions = new HashMap();
@@ -304,9 +310,9 @@ public class SiteInforReport {
             }
         }
         try {
-            File directory = new File("/BysiteReportRelease/TestReportRelease/" + information[0] + "/" + information[1] + "/" + information[2] + "/" + information[3]);
-            File directory1 = new File("/BysiteReportRelease/MailReportRelease/" + information[0] + "/" + information[1] + "/" + information[2] + "/" + information[3]);
-            File directory2 = new File("/BysiteReport/" + information[0] + "/" + information[1] + "/" + information[2] + "/" + information[3]);
+            File directory = new File(reportFtpPath + information[0] + "/" + information[1] + "/" + information[2] + "/" + information[3]);
+            File directory1 = new File(reportMailPath + information[0] + "/" + information[1] + "/" + information[2] + "/" + information[3]);
+            File directory2 = new File(reportPath + information[0] + "/" + information[1] + "/" + information[2] + "/" + information[3]);
             if (directory.exists()) {
                 directory.mkdirs();
             }
