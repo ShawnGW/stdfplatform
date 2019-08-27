@@ -5,6 +5,7 @@ import com.vtest.it.stdfplatform.services.FailDieCheck.impl.AdjacentFailDieCheck
 import com.vtest.it.stdfplatform.services.mes.MesServices;
 import com.vtest.it.stdfplatform.services.parseRawdata.impl.parseRawdata;
 import com.vtest.it.stdfplatform.services.urlMesInformation.WaferIdBinSummaryWrite;
+import com.vtest.it.stdfplatform.services.vtptmt.impl.VtptmtServices;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,8 @@ public class SpecialTestBaseDeal {
     private AdjacentFailDieCheck adjacentFailDieCheck;
     @Autowired
     private WaferIdBinSummaryWrite waferIdBinSummaryWrite;
-
+    @Autowired
+    private VtptmtServices vtptmtServices;
     @Before(value = "execution(* generate(..))&&target(com.vtest.it.stdfplatform.services.rawdatatools.GenerateRawdata)&&args(rawdataInitBean)")
     public void mergeFailDies(RawdataInitBean rawdataInitBean) {
         try {
@@ -75,7 +77,9 @@ public class SpecialTestBaseDeal {
                     rawdataInitBean.getProperties().put("TestDieMaxX", properties.get("TestDieright"));
                     rawdataInitBean.getProperties().put("TestDieMaxY", properties.get("TestDiedown"));
                     adjacentFailDieCheck.perfectDeal(rawdataInitBean);
-                    waferIdBinSummaryWrite.write(rawdataInitBean);
+                    if (vtptmtServices.checkDeviceIfInsetIntoMes(rawdataInitBean.getProperties().get("Customer Code"), rawdataInitBean.getProperties().get("Device Name"))) {
+                        waferIdBinSummaryWrite.write(rawdataInitBean);
+                    }
                 }
             }
         } catch (Exception e) {
