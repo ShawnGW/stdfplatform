@@ -50,7 +50,15 @@ public abstract class AbstractRawDataAfterDeal implements RawDataAfterDeal {
         if (properties.get("CP Yields").equals("NA")) {
             properties.put("CP Yields", properties.get("CP Process") + "&" + (totalDieSum == 0 ? 0 : String.format("%4.2f", (double) passDieSum * 100 / totalDieSum)) + "%;");
         } else {
-            properties.put("CP Yields", properties.get("CP Yields") + ";" + properties.get("CP Process") + "&" + (totalDieSum == 0 ? 0 : String.format("%4.2f", (double) passDieSum * 100 / totalDieSum)) + "%;");
+            StringBuilder stringBuilder = new StringBuilder();
+            String[] cpProcessYileds = properties.get("CP Yields").split(";");
+            for (int i = 0; i < cpProcessYileds.length; i++) {
+                if (!cpProcessYileds[i].contains(properties.get("CP Process"))) {
+                    stringBuilder.append(cpProcessYileds[i]);
+                    stringBuilder.append(";");
+                }
+            }
+            properties.put("CP Yields", stringBuilder.toString() + properties.get("CP Process") + "&" + (totalDieSum == 0 ? 0 : String.format("%4.2f", (double) passDieSum * 100 / totalDieSum)) + "%;");
         }
         bean.setProperties(properties);
         bean.setSiteBinSum(siteBinSum);
