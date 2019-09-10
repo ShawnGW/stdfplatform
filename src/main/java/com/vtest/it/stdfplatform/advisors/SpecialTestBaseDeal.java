@@ -61,7 +61,6 @@ public class SpecialTestBaseDeal {
                         if (!passBinsArray.contains(entry.getValue())) {
                             String coordinate = String.format("%4s", entry.getKey().split(":")[1]) + String.format("%4s", entry.getKey().split(":")[0]);
                             String site = siteBinTestDieMap.get(entry.getKey());
-                            String softBin = entry.getValue();
                             testDieMap.put(coordinate, String.format("%4s", hardBinTestDieMap.get(entry.getKey())) + String.format("%4s", entry.getValue()) + String.format("%4s", site));
                         }
                     }
