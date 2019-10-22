@@ -72,6 +72,7 @@ public class SiteInforReport {
                 siteSummary.setRpProcess("RP0");
                 siteSummary.setWaferId(waferId);
                 siteSummary.setSiteNo(site + "");
+                siteSummary.setPassBins(0);
                 if (bean.getPassFail()) {
                     siteSummary.passBins += bean.getBinCount();
                 }
