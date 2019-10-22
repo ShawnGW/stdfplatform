@@ -63,7 +63,7 @@ public class SiteInforReport {
             if (waferIdsSetPrimary.contains(waferId + ":" + site)) {
                 BysiteAndTestProcessInfors siteSummary = getBean(TotalSummary, waferId, site, "RP0");
                 if (bean.getPassFail()) {
-                    siteSummary.passBins = bean.getBinCount();
+                    siteSummary.passBins += bean.getBinCount();
                 }
                 allBins.add(bean.getSoftBinNo());
                 siteSummary.binSummary.put(bean.getSoftBinNo(), bean.getBinCount());
@@ -73,7 +73,7 @@ public class SiteInforReport {
                 siteSummary.setWaferId(waferId);
                 siteSummary.setSiteNo(site + "");
                 if (bean.getPassFail()) {
-                    siteSummary.passBins = bean.getBinCount();
+                    siteSummary.passBins += bean.getBinCount();
                 }
                 TreeMap<Integer, Integer> binSummary = new TreeMap<>();
                 allBins.add(bean.getSoftBinNo());
@@ -90,7 +90,7 @@ public class SiteInforReport {
                 BysiteAndTestProcessInfors siteSummary = getBean(TotalSummaryReTest, waferId, site, "RP1");
                 siteSummary.binSummary.put(bean.getSoftBinNo(), bean.getBinCount());
                 if (bean.getPassFail()) {
-                    siteSummary.passBins = bean.getBinCount();
+                    siteSummary.passBins += bean.getBinCount();
                 }
                 allBins.add(bean.getSoftBinNo());
             } else {
@@ -100,7 +100,7 @@ public class SiteInforReport {
                 siteSummary.setWaferId(waferId);
                 siteSummary.setSiteNo(site + "");
                 if (bean.getPassFail()) {
-                    siteSummary.passBins = bean.getBinCount();
+                    siteSummary.passBins += bean.getBinCount();
                 }
                 allBins.add(bean.getSoftBinNo());
                 TreeMap<Integer, Integer> binSummary = new TreeMap<>();
