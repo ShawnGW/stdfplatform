@@ -148,10 +148,10 @@ public class StdfTesterMappingParse {
 				primaryTouchDownSet.add(coordinate);
 				primaryTouchDownMap.put(touchDownTimes, touchDownTime);
 			}else {
-				reTestTouchDownSet.add(coordinate);	
+                reTestTouchDownSet.add(coordinate);
 				reTestTouchDownMap.put(touchDownTimes, touchDownTime);
 			}
-			
+
 		}
 		int passDies=0;
 		int failDies=0;
@@ -402,7 +402,7 @@ public class StdfTesterMappingParse {
 						dieInforList.add(SB.toString());
 					}
 				}
-				if (content.contains("TEST_T")) {
+                if (content.contains("TEST_T:")) {
 					String touchDownTestTime=content.split(":")[1].trim();
 					touchDownBuilder.append(touchDownTestTime+";");
 					dieStartFlag=false;
