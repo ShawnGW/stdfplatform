@@ -59,7 +59,7 @@ public class StdfTesterMappingParse {
 		String op=inforsResultMap.get("op");
 		int reTestDies=0;
 		StringBuilder touchDownBuilder=new StringBuilder();
-		HashSet<String> touchDownPassRecord=new HashSet<>(); 
+        HashSet<String> touchDownPassRecord = new HashSet<>();
 		HashMap<String, String> tempDieMap=new HashMap<>();
 		TimeAndTimes timeAndTimes=new TimeAndTimes();
 		timeAndTimes.setTestTime(0);
@@ -126,7 +126,7 @@ public class StdfTesterMappingParse {
 					{
 						primaryDieMap.put(key, String.format("%4s", hardBin)+String.format("%4s", softBin)+String.format("%4s", siteNumber));
 					}
-					tempDieMap.put(key, String.format("%4s", hardBin)+String.format("%4s", softBin)+String.format("%4s", siteNumber));				
+                    tempDieMap.put(key, String.format("%4s", hardBin) + String.format("%4s", softBin) + String.format("%4s", siteNumber));
 				}
 				Set<String> tempMapSet=tempDieMap.keySet();
 				for (String die : tempMapSet) {
@@ -135,7 +135,7 @@ public class StdfTesterMappingParse {
 		}
 		HashMap<String, Integer> primaryTouchDownMap=new HashMap<>();
 		HashMap<String, Integer> reTestTouchDownMap=new HashMap<>();
-		
+
 		HashSet<String> primaryTouchDownSet=new HashSet<>();
 		HashSet<String> reTestTouchDownSet=new HashSet<>();
 		String[] touchDownInfors=touchDownBuilder.toString().split(";");
@@ -155,12 +155,12 @@ public class StdfTesterMappingParse {
 		}
 		int passDies=0;
 		int failDies=0;
-		
+
 		int testDieMinX=0;
 		int testDieMinY=0;
 		int testDieMaxX=0;
 		int testDieMaxY=0;
-		boolean testDieFlag=true;	
+        boolean testDieFlag = true;
 		Set<String> testDieSet=DieMap.keySet();
 		for (String testDie : testDieSet) {
 			int CellX=Integer.valueOf(testDie.substring(0, 4).trim());
@@ -200,7 +200,7 @@ public class StdfTesterMappingParse {
 			}
 			if (testDieMinY>CellY){
 				testDieMinY=CellY;
-			}	
+            }
 			if (testDieMaxX<CellX) {
 				testDieMaxX=CellX;
 			}
@@ -219,10 +219,10 @@ public class StdfTesterMappingParse {
 		Test_Start_Time="20"+Test_Start_Time+ getRandomNumber.getRandomNumber(2);
 		Test_End_Time="20"+Test_End_Time+getRandomNumber.getRandomNumber(2);
 
-		
+
 		int cols=testDieMaxX-testDieMinX+1;
 		int Rows=testDieMaxY-testDieMinY+1;
-		
+
 		properties.put("Wafer ID", waferId.trim());
 		properties.put("Operator", op);
 		properties.put("CP Process", cp);
@@ -270,7 +270,7 @@ public class StdfTesterMappingParse {
 				passTouchDownNumber++;
 			}
 		}
-		
+
 		Set<String> primaryKeySet=primaryTouchDownMap.keySet();
 		for (String primaryKey : primaryKeySet) {
 			primaryTouchDownDuringTime+=primaryTouchDownMap.get(primaryKey);
@@ -289,8 +289,7 @@ public class StdfTesterMappingParse {
         bean.setSingleTouchDownDuringTime(passTouchDownNumber == 0 ? 0 : passTouchDownTotoalTimes / passTouchDownNumber);
 		bean.setTestDuringTime(timeAndTimes.testTime);
 	}
-	private HashMap<String, String> getWaferIdInfors(File file)
-	{	
+	private HashMap<String, String> getWaferIdInfors(File file) {
 		HashMap<String, String> inforsResultMap=new HashMap<>();
 		Integer TesterID=6;
 		boolean flag=true;
@@ -313,7 +312,7 @@ public class StdfTesterMappingParse {
 		}
 		String device=Device_Buffer.toString();
 		String customerCode=nameTokens[2];
-		String lot=nameTokens[TesterID-2];	
+        String lot = nameTokens[TesterID - 2];
 		String cp=nameTokens[Length-5];
 		String Operater=nameTokens[Length-3];
 		inforsResultMap.put("customerCode", customerCode);
@@ -342,11 +341,12 @@ public class StdfTesterMappingParse {
 			if (content.contains("START_T:")) {
 				String Test_Start_Time=content.split("\\(")[1];
 				testStartTime=new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss",Locale.ENGLISH).parse(Test_Start_Time.substring(0, Test_Start_Time.length()-1)).getTime();
-
+                continue;
 			}
 			if (startRecordflag&&content.contains("PIR Record")) {
 				startRecordflag=false;
 				timeAndTimes.touchDownTime++;
+                continue;
 			}
 			if (content.contains("PIR Record")) {
 				touchDownFlag=true;
@@ -360,8 +360,7 @@ public class StdfTesterMappingParse {
 				dieStartFlag=true;
 				continue;
 			}
-			if(dieStartFlag)
-			{				
+			if(dieStartFlag) {
 				if (content.contains("SITE_NUM")) {
 					SB.append(content.split(":")[1].trim()+":");
 					continue;
@@ -389,15 +388,18 @@ public class StdfTesterMappingParse {
 					continue;
 				}
 				if (content.contains("Y_COORD:")) {
-					SB.append(content.split(":")[1].trim());	
-					touchDownBuilder.append(content.split(":")[1].trim()+":");					
+                    SB.append(content.split(":")[1].trim());
+                    touchDownBuilder.append(content.split(":")[1].trim() + ":");
 					String[] infors=SB.toString().split(":");
 					boolean removeDie=false;
+                    if (infors[4].equals("-1024") || infors[5].equals("-1024")) {
+                        removeDie = true;
+                    }
 					for (int i = 2; i < infors.length; i++) {
 						if (Math.abs(Integer.valueOf(infors[i]))>9999) {
 							removeDie=true;
 						}
-					}					
+                    }
 					if (!removeDie) {
 						dieInforList.add(SB.toString());
 					}
@@ -409,7 +411,7 @@ public class StdfTesterMappingParse {
 				}
 			}
 			if (content.contains("FINISH_T:")) {
-				String Test_End_Time=content.split("\\(")[1];				
+                String Test_End_Time = content.split("\\(")[1];
 				testFinnishTime=new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss",Locale.ENGLISH).parse(Test_End_Time.substring(0, Test_End_Time.length()-1)).getTime();
 				Test_End_Time=new SimpleDateFormat("yyMMddHHmmss").format(new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss",Locale.ENGLISH).parse(Test_End_Time));
 				break;
