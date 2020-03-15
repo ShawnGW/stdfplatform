@@ -392,7 +392,7 @@ public class StdfTesterMappingParse {
                     touchDownBuilder.append(content.split(":")[1].trim() + ":");
 					String[] infors=SB.toString().split(":");
 					boolean removeDie=false;
-                    if (infors[4].equals("-1024") || infors[5].equals("-1024")) {
+					if (Integer.valueOf(infors[4]) < (-999) || Integer.valueOf(infors[5]) < (-999)) {
                         removeDie = true;
                     }
 					for (int i = 2; i < infors.length; i++) {

@@ -27,7 +27,8 @@ public class GenerateRawdataInitInformation {
         try {
             stdfTesterMappingParse.get(waferIdOrderList,rawdataInitBean);
         } catch (Exception e) {
-            throw new Exception("there are error in file coding");
+            e.printStackTrace();
+            throw new Exception("there are error in file coding:" + e.getMessage());
         }
         MesConfigBean mesConfigBean = getMesInfor.getWaferConfigFromMes(waferInitInformationBean.getWaferId(), waferInitInformationBean.getCp());
         if (null == mesConfigBean.getInnerLot()) {
