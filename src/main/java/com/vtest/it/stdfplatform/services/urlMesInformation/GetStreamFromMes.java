@@ -3,6 +3,8 @@ package com.vtest.it.stdfplatform.services.urlMesInformation;
 
 import com.vtest.it.stdfplatform.pojo.mes.MesProperties;
 import com.vtest.it.stdfplatform.services.vtptmt.impl.VtptmtInforImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +20,9 @@ public class GetStreamFromMes {
     @Autowired
     private VtptmtInforImpl vtptmtInfor;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GetStreamFromMes.class);
     public BufferedReader getStream(String URL) throws IOException {
+        LOGGER.info(URL);
         MesProperties properties = vtptmtInfor.getProperties();
         URL = URL.replaceAll("#", "%23");
         URL url = new URL(properties.getInitUrl() + URL);
