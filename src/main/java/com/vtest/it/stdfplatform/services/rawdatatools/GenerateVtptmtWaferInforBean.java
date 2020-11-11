@@ -33,20 +33,20 @@ public class GenerateVtptmtWaferInforBean {
         } catch (ParseException e) {
             binWaferInforBean.setStartTime(new Date());
         }
-        binWaferInforBean.setGrossDie(Integer.valueOf(properties.get("Gross Die")));
-        binWaferInforBean.setPassDie(Integer.valueOf(properties.get("Pass Die")));
-        binWaferInforBean.setFailDie(Integer.valueOf(properties.get("Fail Die")));
-        binWaferInforBean.setYield(Double.valueOf(properties.get("Wafer Yield").substring(0, properties.get("Wafer Yield").length() - 1)));
+        binWaferInforBean.setGrossDie(Integer.parseInt(properties.get("Gross Die")));
+        binWaferInforBean.setPassDie(Integer.parseInt(properties.get("Pass Die")));
+        binWaferInforBean.setFailDie(Integer.parseInt(properties.get("Fail Die")));
+        binWaferInforBean.setYield(Double.parseDouble(properties.get("Wafer Yield").substring(0, properties.get("Wafer Yield").length() - 1)));
         try {
             binWaferInforBean.setEndTime(new Date(format.parse(properties.get("Test End Time")).getTime()));
         } catch (ParseException e) {
             binWaferInforBean.setEndTime(new Date());
         }
         binWaferInforBean.setCheckStatus(0);
-        binWaferInforBean.setMapCols(Integer.valueOf(properties.get("Map Cols")));
-        binWaferInforBean.setMapRows(Integer.valueOf(properties.get("Map Rows")));
-        binWaferInforBean.setMinY(Integer.valueOf(properties.get("MinY")));
-        binWaferInforBean.setMinX(Integer.valueOf(properties.get("MinX")));
+        binWaferInforBean.setMapCols(Integer.parseInt(properties.get("Map Cols")));
+        binWaferInforBean.setMapRows(Integer.parseInt(properties.get("Map Rows")));
+        binWaferInforBean.setMinY(Integer.parseInt(properties.get("MinY")));
+        binWaferInforBean.setMinX(Integer.parseInt(properties.get("MinX")));
 
         HashMap<String, String> othersparams = new HashMap<>();
         othersparams.put("Inner Lot", properties.get("Inner Lot"));

@@ -35,9 +35,9 @@ public class SiteInforReport {
     @Async
     public void write(String... information) throws IOException {
         HashMap<Integer, String> binDescriptions = new HashMap();
-        ExcelInitModel model = new ExcelInitModel();
         ArrayList<Integer> osBins = new ArrayList<>();
         HashMap<String, String> infors = new HashMap<>();
+
         infors.put("customerCode", information[0]);
         infors.put("device", information[1]);
         infors.put("lot", information[2]);
@@ -219,6 +219,7 @@ public class SiteInforReport {
             }
             checkSetRetest.add(bean.waferId);
         }
+        ExcelInitModel model = new ExcelInitModel();
         XSSFWorkbook workbook = model.workbook;
         XSSFSheet sheet = workbook.createSheet("Summary");
         for (int i = 0; i < 13; i++) {
@@ -247,16 +248,13 @@ public class SiteInforReport {
             sheet.getRow(0).createCell(startIndex).setCellStyle(model.Center_Style);
             sheet.getRow(0).getCell(startIndex).setCellValue(bin);
             sheet.getRow(1).createCell(startIndex).setCellStyle(model.Center_Style);
-            sheet.getRow(1).getCell(startIndex).setCellValue(binDescriptions.containsKey(bin) ? binDescriptions.get(bin) : "NA");
+            sheet.getRow(1).getCell(startIndex).setCellValue(binDescriptions.getOrDefault(bin, "NA"));
             startIndex++;
         }
         int startRow = 2;
-        int gapStartindex = 0;
+        int gapStartIndex = 2;
         for (String waferId : waferIds) {
             for (int k = 0; k < resultArray.length; k++) {
-                if (k == 2 || k == 0) {
-                    gapStartindex += 3;
-                }
                 for (BysiteAndTestProcessInfors bean : resultArray[k]) {
                     if (bean.waferId.equals(waferId)) {
                         sheet.createRow(startRow);
@@ -272,7 +270,14 @@ public class SiteInforReport {
                         sheet.getRow(startRow).getCell(1).setCellValue(information[2]);
                         sheet.getRow(startRow).getCell(2).setCellValue(bean.waferId);
                         sheet.getRow(startRow).getCell(3).setCellValue(bean.rpProcess);
-                        sheet.getRow(startRow).getCell(4).setCellValue(bean.siteNo.length() == 1 ? "Site" + bean.siteNo : bean.siteNo);
+                        sheet.getRow(startRow).getCell(4).setCellValue(bean.siteNo.equals("All") ? bean.siteNo : "Site" + bean.siteNo);
+                        if (bean.siteNo.equals("All")) {
+                            for (int i = gapStartIndex; i < startRow; i++) {
+                                sheet.getRow(i).getCell(10).setCellStyle(model.Data_Style);
+                                sheet.getRow(i).getCell(10).setCellFormula("MAX(I" + (gapStartIndex + 2) + ":I" + (startRow) + ")-MIN(I" + (gapStartIndex + 2) + ":I" + (startRow) + ")");
+                            }
+                            gapStartIndex = startRow;
+                        }
                         sheet.getRow(startRow).getCell(5).setCellValue(totalDies);
                         sheet.getRow(startRow).getCell(6).setCellValue(null == bean.passBins ? 0 : bean.passBins);
                         sheet.getRow(startRow).getCell(7).setCellFormula("F" + (startRow + 1) + "-G" + (startRow + 1));
@@ -281,8 +286,6 @@ public class SiteInforReport {
                         sheet.getRow(startRow).getCell(9).setCellStyle(model.Data_Style);
                         sheet.getRow(startRow).getCell(9).setCellValue(Double.parseDouble(String.format("%.6f", (double) bean.osBins / totalDies)));
                         if (bean.rpProcess.equals("RP1")) {
-                            sheet.getRow(startRow).getCell(10).setCellStyle(model.Data_Style);
-                            sheet.getRow(startRow).getCell(10).setCellFormula("ABS(I" + (1 + gapStartindex) + "-I" + (2 + gapStartindex) + ")");
                             sheet.getRow(startRow).getCell(11).setCellStyle(model.Data_Style);
                             Integer grossDie = 0;
                             for (BysiteAndTestProcessInfors allPrimaryBean : TotalSummaryAllSiteSum) {
@@ -295,20 +298,21 @@ public class SiteInforReport {
                             sheet.getRow(startRow).getCell(11).setCellValue(Double.parseDouble(String.format("%.6f", (double) bean.passBins / grossDie)));
                             sheet.getRow(startRow).getCell(12).setCellStyle(model.Data_Style);
                             sheet.getRow(startRow).getCell(12).setCellFormula("G" + (startRow + 1) + "/F" + (startRow + 1));
-                        } else {
-                            sheet.getRow(startRow).getCell(10).setCellStyle(model.Data_Style);
-                            sheet.getRow(startRow).getCell(10).setCellFormula("ABS(I" + (1 + gapStartindex) + "-I" + (2 + gapStartindex) + ")");
                         }
-                        int binStartindex = 13;
+                        int binStartIndex = 13;
                         for (Integer bin : allBins) {
-                            sheet.getRow(startRow).createCell(binStartindex).setCellStyle(model.Center_Style);
-                            sheet.getRow(startRow).getCell(binStartindex).setCellValue(binSummary.containsKey(bin) ? binSummary.get(bin) : 0);
-                            binStartindex++;
+                            sheet.getRow(startRow).createCell(binStartIndex).setCellStyle(model.Center_Style);
+                            sheet.getRow(startRow).getCell(binStartIndex).setCellValue(binSummary.getOrDefault(bin, 0));
+                            binStartIndex++;
                         }
                         startRow++;
                     }
                 }
             }
+        }
+        for (int i = gapStartIndex; i < startRow; i++) {
+            sheet.getRow(i).getCell(10).setCellStyle(model.Data_Style);
+            sheet.getRow(i).getCell(10).setCellFormula("MAX(I" + (gapStartIndex + 2) + ":I" + (startRow) + ")-MIN(I" + (gapStartIndex + 2) + ":I" + (startRow) + ")");
         }
         try {
             File directory = new File(reportFtpPath + information[0] + "/" + information[1] + "/" + information[2] + "/" + information[3]);
@@ -328,11 +332,12 @@ public class SiteInforReport {
                 new File("/TempBySiteReport/").mkdirs();
             }
             workbook.write(new FileOutputStream(srcFile));
+            workbook.close();
             FileUtils.copyFile(srcFile, new File(directory.getPath() + "/" + srcFile.getName()));
             FileUtils.copyFile(srcFile, new File(directory1.getPath() + "/" + srcFile.getName()));
             FileUtils.copyFile(srcFile, new File(directory2.getPath() + "/" + srcFile.getName()));
             FileUtils.forceDelete(srcFile);
-            workbook.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

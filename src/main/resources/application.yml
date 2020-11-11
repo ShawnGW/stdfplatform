@@ -99,7 +99,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: ["*"]
+        include: [ "*" ]
 info:
   name: shawn
   server:
