@@ -35,4 +35,7 @@
     <select id="getTestBase" statementType="CALLABLE" resultType="string">
         {call WebMES.dbo.pro_GetTestBase(#{waferId,mode=IN,jdbcType=VARCHAR},#{cpProcess,mode=IN,jdbcType=VARCHAR})}
     </select>
+    <update id="rcsCheckResultUp" parameterType="string">
+        {call WebMES.dbo.pro_SaveRcsInfo(#{result,mode=IN,jdbcType=VARCHAR})}
+    </update>
 </mapper>

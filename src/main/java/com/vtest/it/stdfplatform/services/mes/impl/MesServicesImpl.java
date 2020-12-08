@@ -82,4 +82,9 @@ public class MesServicesImpl implements MesServices {
         String result = mesDao.getTestBase(waferId, cpProcess);
         return null == result ? "FULL-TEST" : result;
     }
+
+    @Override
+    public void rcsResultUp(String result) {
+        mesDao.rcsCheckResultUp(result);
+    }
 }

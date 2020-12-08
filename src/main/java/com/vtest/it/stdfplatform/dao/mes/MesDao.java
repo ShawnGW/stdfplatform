@@ -30,4 +30,6 @@ public interface MesDao {
     public String getPreviousCpStep(@Param("waferId") String waferId, @Param("cpProcess") String cpProcess);
 
     public String getTestBase(@Param("waferId") String waferId, @Param("cpProcess") String cpProcess);
+
+    void rcsCheckResultUp(@Param("result") String checkResult);
 }
